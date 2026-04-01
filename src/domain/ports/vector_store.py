@@ -1,0 +1,13 @@
+from typing import Protocol
+
+from src.domain.models import SearchResult
+
+
+class VectorStorePort(Protocol):
+    async def upsert(self, article_id: str, embedding: list[float]) -> None: ...
+
+    async def search(self, query_embedding: list[float], top_k: int) -> list[SearchResult]: ...
+
+    async def delete(self, article_id: str) -> None: ...
+
+    async def clear(self) -> None: ...
