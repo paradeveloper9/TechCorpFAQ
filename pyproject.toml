@@ -88,6 +88,10 @@ ignore_missing_imports = true
 module = "src.adapters.inbound.http.router"
 disallow_untyped_decorators = false
 
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 minversion = "8.0"
 addopts = [
