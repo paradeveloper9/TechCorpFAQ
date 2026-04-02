@@ -21,7 +21,7 @@ def create_rag_router(
         body: AskRequest,
         rag: Annotated[RAGService, Depends(_rag_dep)],
     ) -> AskResponse:
-        result = await rag.answer(body.question, top_k=body.top_k)
+        result = await rag.answer(body.question)
         return AskResponse.model_validate(result.model_dump())
 
     return router

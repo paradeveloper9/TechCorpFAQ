@@ -61,18 +61,6 @@ async def test_ask_passes_question_to_rag_service(client: AsyncClient, rag: Asyn
     assert rag.answer.await_args.args[0] == "What are the office hours?"
 
 
-async def test_ask_passes_top_k_override(client: AsyncClient, rag: AsyncMock) -> None:
-    await client.post("/api/ask", json={"question": "q", "top_k": 3})
-
-    assert rag.answer.await_args.kwargs["top_k"] == 3
-
-
-async def test_ask_passes_top_k_none_when_omitted(client: AsyncClient, rag: AsyncMock) -> None:
-    await client.post("/api/ask", json={"question": "q"})
-
-    assert rag.answer.await_args.kwargs["top_k"] is None
-
-
 # ---------------------------------------------------------------------------
 # Validation errors
 # ---------------------------------------------------------------------------
@@ -82,13 +70,11 @@ async def test_ask_passes_top_k_none_when_omitted(client: AsyncClient, rag: Asyn
     "payload",
     [
         {"question": ""},
-        {"question": "q", "top_k": 0},
         {},
     ],
 )
 async def test_ask_rejects_invalid_payload(client: AsyncClient, payload: dict[str, object]) -> None:
     response = await client.post("/api/ask", json=payload)
-
     assert response.status_code == 422
 
 
