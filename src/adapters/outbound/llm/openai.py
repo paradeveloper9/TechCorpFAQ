@@ -1,5 +1,6 @@
 from openai import AsyncOpenAI
 
+from src.adapters.outbound.llm.observability import log_llm_generate
 from src.domain.ports.llm import LLMPort
 
 
@@ -16,6 +17,7 @@ class OpenAILLMAdapter(LLMPort):
             base_url=base_url,
         )
 
+    @log_llm_generate
     async def generate(self, system_prompt: str, user_prompt: str) -> str:
         response = await self._client.chat.completions.create(
             model=self._model,
