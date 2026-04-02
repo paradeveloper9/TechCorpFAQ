@@ -83,5 +83,5 @@ def create_app(container: Container | None = None) -> FastAPI:
         yield
 
     app = FastAPI(lifespan=lifespan)
-    app.include_router(create_rag_router(rag_service=c.rag_service_factory()))
+    app.include_router(create_rag_router(rag_service=c.rag_service_factory()), prefix="/api")
     return app
